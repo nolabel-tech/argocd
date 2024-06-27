@@ -4,7 +4,7 @@ metadata:
   name: nolabel-python-backend
   namespace: argocd
 spec:
-  project: nolabel-backend
+  project: nolabel-dev
   source:
     repoURL: 'https://github.com/nolabel-tech/nolabel-backend.git'
     path: k8s
