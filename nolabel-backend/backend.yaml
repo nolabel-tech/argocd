@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: python-app
+  name: nolabel-python-backend
   namespace: argocd
 spec:
-  project: django-backend
+  project: nolabel-backend
   source:
     repoURL: 'https://github.com/nolabel-tech/nolabel-backend.git'
     path: k8s
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: nolabel-project
+    namespace: nolabel-dev
   syncPolicy:
     automated:
       selfHeal: true
