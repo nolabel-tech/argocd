@@ -1,0 +1,28 @@
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: juice-shop-ingress
+#  namespace: juice-shop
+#  annotations:
+#    kubernetes.io/ingress.class: "nginx"
+#    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+#    acme.cert-manager.io/http01-ingress-class: "nginx"
+#spec:
+#  ingressClassName: nginx
+#  rules:
+#    - host: juice-shop.sm2.fun
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: test-app-juice-shop
+#                port:
+#                  number: 3000
+#  tls:
+#    - hosts:
+#        - juice-shop.sm2.fun
+#      secretName: juice-shop-tls
+#
+#

@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend-vk-hack
+  namespace: argocd
+spec:
+  project: vk-hackathon-apps
+  source:
+    repoURL: 'https://secure-messages.github.io/charts/'
+    chart: 'nodejs-app-chart'
+    targetRevision: '0.1.1'
+    helm:
+      values: |
+        replicaCount: 1
+        image:
+          repository: nolabelregistry/frontend_vk_hack
+          pullPolicy: Always
+          tag: dev
+        imagePullSecrets:
+          - name: dockerhub-secret
+        nameOverride: "frontend-vk-hack"
+        fullnameOverride: "frontend-vk-hack"
+        service:
+          type: ClusterIP
+          port: 80
+          targetPort: 8000
+        resources:
+           limits:
+             cpu: 500m
+             memory: 1Gi
+           requests:
+             cpu: 300m
+             memory: 800Mi
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: vk-hackathon-ns
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

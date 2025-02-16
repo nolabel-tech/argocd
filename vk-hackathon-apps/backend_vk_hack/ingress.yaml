@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-vk-hack-ingress
+  namespace: vk-hackathon-ns
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    acme.cert-manager.io/http01-ingress-class: "nginx"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: vk-back.sm2.fun
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-vk-hack
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - vk-back.sm2.fun
+      secretName: vk-back-tls
+
+

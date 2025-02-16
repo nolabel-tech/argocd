@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql-vk-hack
+  namespace: argocd
+spec:
+  project: vk-hackathon-apps
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami/'
+    chart: 'postgresql'
+    targetRevision: '16.0.1'
+    helm:
+      values: |
+        global:
+          imagePullSecrets:
+            - dockerhub-secret
+        auth:
+          enablePostgresUser: true
+          postgresPassword: "hackme"
+          username: "user"
+          password: "hackme"
+          database: "vk_hack_db"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: vk-hackathon-ns
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,104 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-apps
+  namespace: argocd
+spec:
+  project: cluster
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  source:
+    chart: argocd-apps
+    repoURL: "https://argoproj.github.io/argo-helm"
+    targetRevision: 2.0.0
+    helm:
+      values: |
+        applications:
+          cluster:
+            namespace: argocd
+            additionalLabels: {}
+            additionalAnnotations: {}
+            project: cluster
+            source:
+               repoURL: https://github.com/Secure-Messages/argocd-all.git
+               targetRevision: HEAD
+               path: cluster
+               directory:
+                 recurse: true
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: argocd
+            syncPolicy:
+              automated:
+                prune: false
+                selfHeal: false
+          vk-hackathon-apps:
+            namespace: argocd
+            additionalLabels: {}
+            additionalAnnotations: {}
+            project: vk-hackathon-apps
+            source:
+              repoURL: https://github.com/Secure-Messages/argocd-all.git
+              targetRevision: HEAD
+              path: vk-hackathon-apps
+              directory:
+                recurse: true
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: argocd
+            syncPolicy:
+              automated:
+                prune: true
+                selfHeal: true
+        projects: 
+          cluster:
+            namespace: argocd
+            additionalLabels: {}
+            additionalAnnotations: {}
+            description: Cluster addons
+            sourceRepos:
+            - '*'
+            destinations:
+            - namespace: '*'
+              server: '*'
+            clusterResourceWhitelist:
+            - group: '*'
+              kind: '*'
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+            orphanedResources:
+              warn: true
+        
+          vk-hackathon-apps:
+            namespace: argocd
+            additionalLabels: {}
+            additionalAnnotations: {}
+            description: vk hackathon applications
+            sourceRepos:
+            - '*'
+            destinations:
+            - namespace: '*'
+              server: '*'
+            clusterResourceWhitelist:
+            - group: '*'
+              kind: '*'
+            metadata:
+              finalizers:
+              - resources-finalizer.argocd.argoproj.io
+            orphanedResources:
+              warn: true
+
+
+  
+
+
+

@@ -1,0 +1,20 @@
+#apiVersion: argoproj.io/v1alpha1
+#kind: Application
+#metadata:
+#  name: test-app
+#  namespace: argocd
+#spec:
+#  project: vk-hackathon-apps
+#  source:
+#    repoURL: 'https://charts.securecodebox.io/'
+#    targetRevision: 4.9.0
+#    chart: juice-shop
+#  destination:
+#    server: 'https://kubernetes.default.svc'
+#    namespace: juice-shop
+#  syncPolicy:
+#    automated:
+#      selfHeal: true
+#      prune: true
+#    syncOptions:
+#      - CreateNamespace=true
